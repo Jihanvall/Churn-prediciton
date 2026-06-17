@@ -88,16 +88,21 @@ The project follows a highly modular software architecture divided into distinct
 .
 ├── app.py                         # Main Streamlit Application UI
 ├── requirements.txt               # Project Dependency Affirmation
-├── models/                        # Serialized Model Objects
-│   ├── final_xgboost_model.pkl
-│   └── fitted_scaler.pkl
-├── src/                           # Source Code Modules
-│   ├── data_preprocessing.py
-│   └── feature_engineering.py
+├── .gitignore                     # Git Exclusion Configuration
+├── README.md                      # System Documentation
 ├── data/                          # Runtime Data Storage
-│   ├── customer_churn_raw.csv
-│   └── churn_predictions_results.csv
-└── README.md                      # System Documentation
+│   └── raw/                       # Immutable Raw Data Ingestion
+│       └── customer_churn_raw.csv # Baseline Customer Churn Dataset
+├── models/                        # Serialized Model Objects
+│   ├── final_xgboost_model.pkl    # Trained XGBoost Binary
+│   └── fitted_scaler.pkl          # Serialized Feature Scaler
+├── notebooks/                     # Exploratory Data Analysis
+│   └── Customer.ipynb             # Research and Model Development Sandbox
+└── src/                           # Source Code Modules
+    ├── data_preprocessing.py      # Data Cleaning and Transformation Pipeline
+    ├── evaluate.py                # Model Evaluation and Metrics Compute
+    ├── feature_engineering.py     # Mathematical Extraction of Predictors
+    └── train.py                   # Automated Model Training Pipeline
 ```
 
 ## Model Performance
