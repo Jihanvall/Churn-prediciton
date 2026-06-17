@@ -1,0 +1,15 @@
+# Python bytecode cache
+__pycache__/
+*.pyc
+
+# Local Virtual Environments
+venv/
+.venv/
+env/
+
+# Streamlit local configuration
+.streamlit/
+
+# OS generated files
+.DS_Store
+Thumbs.db

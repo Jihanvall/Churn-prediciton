@@ -1,0 +1,15 @@
+# Data Manipulation & Processing
+pandas>=2.0.0
+numpy>=1.26.0
+
+# Machine Learning & Modeling
+scikit-learn>=1.5.0
+xgboost>=2.0.0
+imbalanced-learn>=0.12.0
+
+# Visualization
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# Deployment & Web Interface
+streamlit>=1.30.0
