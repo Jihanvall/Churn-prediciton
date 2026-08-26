@@ -65,6 +65,19 @@ def load_artifacts():
     return model, scaler
 
 xgb_model, scaler = load_artifacts()
+
+def prepare_features(input_df, model, scaler):
+    expected_columns = model.get_booster().feature_names
+    for col in expected_columns:
+        if col not in input_df.columns:
+            input_df[col] = 0
+    input_df = input_df[expected_columns]
+
+    numerical_cols = ['tenure', 'MonthlyCharges', 'TotalCharges']
+    input_df[numerical_cols] = scaler.transform(input_df[numerical_cols])
+
+    return input_df
+
 # 4. Main Header
 st.title("Customer Attrition Diagnostic Panel")
 
@@ -143,16 +156,8 @@ with tab_single:
         }
         
         input_df = pd.DataFrame([input_dict])
-        
-        expected_columns = xgb_model.get_booster().feature_names
-        for col in expected_columns:
-            if col not in input_df.columns:
-                input_df[col] = 0
-        input_df = input_df[expected_columns]
-        
-        numerical_cols = ['tenure', 'MonthlyCharges', 'TotalCharges']
-        input_df[numerical_cols] = scaler.transform(input_df[numerical_cols])
-        
+        input_df = prepare_features(input_df, xgb_model, scaler)
+
         probability = xgb_model.predict_proba(input_df)[0][1]
         prediction = int(probability > 0.5)
         
@@ -178,20 +183,9 @@ with tab_batch:
         if st.button("Execute  Diagnostic & Analyze Root Causes", type="primary"):
                 try:
                     processed_df = clean_and_encode(raw_df)
-                    
-                    expected_columns = xgb_model.get_booster().feature_names
-                    for col in expected_columns:
-                        if col not in processed_df.columns:
-                            processed_df[col] = 0
-                            
-                    features_df = processed_df[expected_columns]
-                    
-                    numerical_cols = ['tenure', 'MonthlyCharges', 'TotalCharges']
-                    features_df_scaled = features_df.copy()
-                    features_df_scaled[numerical_cols] = scaler.transform(features_df[numerical_cols])
-                    
+                    features_df_scaled = prepare_features(processed_df, xgb_model, scaler)
+
                     probabilities = xgb_model.predict_proba(features_df_scaled)[:, 1]
-                    
                     results_df = raw_df.copy()
                     results_df['Churn_Probability'] = probabilities
                     results_df['Churn_Prediction'] = (probabilities > 0.5).astype(int)
