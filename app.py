@@ -186,10 +186,9 @@ with tab_batch:
                     features_df_scaled = prepare_features(processed_df, xgb_model, scaler)
 
                     probabilities = xgb_model.predict_proba(features_df_scaled)[:, 1]
-                    results_df = raw_df.copy()
+                    results_df = processed_df.copy()
                     results_df['Churn_Probability'] = probabilities
                     results_df['Churn_Prediction'] = (probabilities > 0.5).astype(int)
-                    
                     st.success("diagnostic completed successfully.")
                     
                     st.markdown("---")
