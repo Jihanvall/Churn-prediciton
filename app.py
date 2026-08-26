@@ -44,15 +44,27 @@ st.markdown("""
 def load_artifacts():
     model_path = os.path.join('models', 'final_xgboost_model.pkl')
     scaler_path = os.path.join('models', 'fitted_scaler.pkl')
-    
-    with open(model_path, 'rb') as f:
-        model = pickle.load(f)
-    with open(scaler_path, 'rb') as f:
-        scaler = pickle.load(f)
+
+    if not os.path.exists(model_path):
+        st.error(f"Model file not found at '{model_path}'. Please ensure the model artifact is present before running the app.")
+        st.stop()
+
+    if not os.path.exists(scaler_path):
+        st.error(f"Scaler file not found at '{scaler_path}'. Please ensure the scaler artifact is present before running the app.")
+        st.stop()
+
+    try:
+        with open(model_path, 'rb') as f:
+            model = pickle.load(f)
+        with open(scaler_path, 'rb') as f:
+            scaler = pickle.load(f)
+    except Exception as e:
+        st.error(f"Failed to load model artifacts: {e}")
+        st.stop()
+
     return model, scaler
 
 xgb_model, scaler = load_artifacts()
-
 # 4. Main Header
 st.title("Customer Attrition Diagnostic Panel")
 
