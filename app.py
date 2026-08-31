@@ -183,6 +183,11 @@ with tab_batch:
         if st.button("Execute  Diagnostic & Analyze Root Causes", type="primary"):
                 try:
                     processed_df = clean_and_encode(raw_df)
+                    # Keep the original Contract and InternetService columns
+                    # around: clean_and_encode() replaces them with one-hot
+                    # columns, but Root Cause Analysis below needs the
+                    # original category names to group by.
+                    processed_df[['Contract', 'InternetService']] = raw_df.loc[processed_df.index, ['Contract', 'InternetService']]
                     features_df_scaled = prepare_features(processed_df, xgb_model, scaler)
 
                     probabilities = xgb_model.predict_proba(features_df_scaled)[:, 1]
