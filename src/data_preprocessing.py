@@ -44,19 +44,20 @@ def clean_and_encode(df):
         df_encoded = df_encoded.drop(columns=['customerID'])
         
     return df_encoded
-
-def split_scale_and_balance(df_encoded):
+def train_test_split_encoded(df_encoded):
     """
-    Splits the data, applies strict scaling to prevent data leakage,
-    and applies SMOTENC for balancing.
+    Splits encoded data into train/test sets using the project's
+    standard split parameters. Shared by split_scale_and_balance()
+    and evaluate.py, so the two never drift out of sync.
     """
     X = df_encoded.drop(columns=['Churn'])
     y = df_encoded['Churn']
-    
-    # 1. Split FIRST
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42, stratify=y
-    )
+    return train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+
+def split_scale_and_balance(df_encoded):
+
+    X_train, X_test, y_train, y_test = train_test_split_encoded(df_encoded)
     
     # 2. Strict Scaling
     scaler = StandardScaler()

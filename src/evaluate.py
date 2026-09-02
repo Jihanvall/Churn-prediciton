@@ -1,8 +1,7 @@
 import pickle
 import pandas as pd
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-from data_preprocessing import clean_and_encode
-from sklearn.model_selection import train_test_split
+from data_preprocessing import clean_and_encode, train_test_split_encoded
 
 def load_and_evaluate(raw_data_path, model_path, scaler_path):
     """
@@ -12,16 +11,9 @@ def load_and_evaluate(raw_data_path, model_path, scaler_path):
     print("1. Loading raw data and preparing the exact Test Set...")
     df = pd.read_csv(raw_data_path)
     df_encoded = clean_and_encode(df)
-    
-    # Isolate the features and target
-    X = df_encoded.drop(columns=['Churn'])
-    y = df_encoded['Churn']
-    
-    # Recreate the exact same test split using the identical random_state (42)
-    _, X_test_raw, _, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42, stratify=y
-    )
-    
+    # Reuse the shared split helper so this can never drift out of sync
+    # with the split used during training
+    _, X_test_raw, _, y_test = train_test_split_encoded(df_encoded)
     print("2. Loading the saved Scaler and Model artifacts...")
     with open(scaler_path, 'rb') as scaler_file:
         saved_scaler = pickle.load(scaler_file)
