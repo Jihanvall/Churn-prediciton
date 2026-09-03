@@ -33,5 +33,13 @@ def build_advanced_features(df):
     if 'Contract' in df_enhanced.columns and 'MonthlyCharges' in df_enhanced.columns:
         month_to_month_logic = (df_enhanced['Contract'] == 'Month-to-month').astype(int)
         df_enhanced['HighCost_ShortContract'] = df_enhanced['MonthlyCharges'] * month_to_month_logic
-
+    # 5. Feature 4: Cost_Per_Service
+    # Monthly cost per active service; protected against division by zero
+    # for customers with zero active services
+    if 'MonthlyCharges' in df_enhanced.columns and 'TotalServices' in df_enhanced.columns:
+        df_enhanced['Cost_Per_Service'] = np.where(
+            df_enhanced['TotalServices'] > 0,
+            df_enhanced['MonthlyCharges'] / df_enhanced['TotalServices'],
+            0
+        )
     return df_enhanced
