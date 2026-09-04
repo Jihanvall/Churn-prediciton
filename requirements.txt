@@ -13,3 +13,6 @@ seaborn>=0.13.0
 
 # Deployment & Web Interface
 streamlit>=1.30.0
+
+# Testing
+pytest>=8.0.0
