@@ -127,6 +127,8 @@ with tab_single:
             
         high_cost_short_contract = monthly_charges if contract == "Month-to-month" else 0.0
 
+        cost_per_service = (monthly_charges / total_services) if total_services > 0 else 0
+
         input_dict = {
             'tenure': tenure,
             'MonthlyCharges': monthly_charges,
@@ -152,7 +154,9 @@ with tab_single:
             'PaymentMethod_Mailed check': 1 if payment_method == "Mailed check" else 0,
             'Is_Alone': is_alone,
             'TotalServices': total_services,
-            'HighCost_ShortContract': high_cost_short_contract
+            'HighCost_ShortContract': high_cost_short_contract,
+            'Cost_Per_Service': cost_per_service
+
         }
         
         input_df = pd.DataFrame([input_dict])
