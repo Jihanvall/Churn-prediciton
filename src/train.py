@@ -50,5 +50,5 @@ def train_and_save_model(raw_data_path):
 if __name__ == "__main__":
     # Define the path to the raw dataset
     # Adjust this path if your data folder structure is different
-    DATA_PATH = '../data/raw/customer_data.csv'
+    DATA_PATH = '../data/raw/customer_churn_raw.csv'
     train_and_save_model(DATA_PATH)
