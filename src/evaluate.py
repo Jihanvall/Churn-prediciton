@@ -42,7 +42,7 @@ def load_and_evaluate(raw_data_path, model_path, scaler_path):
 
 if __name__ == "__main__":
     # Define paths
-    DATA_PATH = '../data/raw/customer_data.csv'
+    DATA_PATH = '../data/raw/customer_churn_raw.csv'
     MODEL_PATH = '../models/final_xgboost_model.pkl'
     SCALER_PATH = '../models/fitted_scaler.pkl'
     
