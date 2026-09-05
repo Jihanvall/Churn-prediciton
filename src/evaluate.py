@@ -1,3 +1,4 @@
+import argparse
 import pickle
 import pandas as pd
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
@@ -41,9 +42,22 @@ def load_and_evaluate(raw_data_path, model_path, scaler_path):
     print(confusion_matrix(y_test, y_pred))
 
 if __name__ == "__main__":
-    # Define paths
-    DATA_PATH = '../data/raw/customer_churn_raw.csv'
-    MODEL_PATH = '../models/final_xgboost_model.pkl'
-    SCALER_PATH = '../models/fitted_scaler.pkl'
-    
-    load_and_evaluate(DATA_PATH, MODEL_PATH, SCALER_PATH)
+    parser = argparse.ArgumentParser(description="Evaluate the trained churn prediction model.")
+    parser.add_argument(
+        "--data",
+        default="../data/raw/customer_churn_raw.csv",
+        help="Path to the raw customer data CSV file.",
+    )
+    parser.add_argument(
+        "--model",
+        default="../models/final_xgboost_model.pkl",
+        help="Path to the saved model artifact.",
+    )
+    parser.add_argument(
+        "--scaler",
+        default="../models/fitted_scaler.pkl",
+        help="Path to the saved scaler artifact.",
+    )
+    args = parser.parse_args()
+
+    load_and_evaluate(args.data, args.model, args.scaler)

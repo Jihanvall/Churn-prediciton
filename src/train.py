@@ -2,6 +2,7 @@ import os
 import pickle
 import pandas as pd
 from xgboost import XGBClassifier
+import argparse
 
 # Import the preprocessing pipeline
 from data_preprocessing import clean_and_encode, split_scale_and_balance
@@ -51,7 +52,12 @@ def train_and_save_model(raw_data_path):
     print("Success: Training complete and artifacts saved in the 'models' directory.")
 
 if __name__ == "__main__":
-    # Define the path to the raw dataset
-    # Adjust this path if your data folder structure is different
-    DATA_PATH = '../data/raw/customer_churn_raw.csv'
-    train_and_save_model(DATA_PATH)
+    parser = argparse.ArgumentParser(description="Train the churn prediction model.")
+    parser.add_argument(
+        "--data",
+        default="../data/raw/customer_churn_raw.csv",
+        help="Path to the raw customer data CSV file.",
+    )
+    args = parser.parse_args()
+    
+    train_and_save_model(args.data)
