@@ -20,8 +20,8 @@ Follow these steps to set up the environment and install the necessary dependenc
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/your-username/churn-prediction-intelligence.git](https://github.com/your-username/churn-prediction-intelligence.git)
-cd churn-prediction-intelligence
+git clone https://github.com/Jihanvall/Churn-prediciton.git
+cd Churn-prediciton
 ```
 ### 2. Install Dependencies
 
