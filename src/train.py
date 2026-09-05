@@ -19,14 +19,17 @@ def train_and_save_model(raw_data_path):
     df_encoded = clean_and_encode(df)
     X_train_resampled, X_test, y_train_resampled, y_test, scaler = split_scale_and_balance(df_encoded)
     
-    # 3. Initialize and Train the Winning XGBoost Model
-    # Note: scale_pos_weight is removed because SMOTENC already balanced the classes perfectly
+   # SMOTENC already balances the training classes 1:1, so no extra
+    # class weighting is needed here for a neutral baseline. Slightly
+    # boosting scale_pos_weight above 1 trades some precision for higher
+    # recall on the minority (churn) class, which is usually the right
+    # tradeoff for this kind of business problem.
     print("Training the XGBoost model...")
     xgb_final = XGBClassifier(
         n_estimators=100,
         max_depth=5,
         learning_rate=0.1,
-        scale_pos_weight=(1033 / 374), # Intentionally kept for maximum Class 1 sensitivity
+        scale_pos_weight=1.5,
         random_state=42,
         eval_metric='logloss'
     )
