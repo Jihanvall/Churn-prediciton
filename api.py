@@ -4,12 +4,20 @@ import sys
 
 import pandas as pd
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 sys.path.append(os.path.join(os.getcwd(), 'src'))
 from feature_engineering import build_advanced_features
 
 app = FastAPI(title="Churn Prediction API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 with open(os.path.join('models', 'final_xgboost_model.pkl'), 'rb') as f:
     model = pickle.load(f)
