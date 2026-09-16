@@ -1,14 +1,16 @@
+import io
 import pickle
 import os
 import sys
 
 import pandas as pd
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 sys.path.append(os.path.join(os.getcwd(), 'src'))
 from feature_engineering import build_advanced_features
+from data_preprocessing import clean_and_encode
 
 app = FastAPI(title="Churn Prediction API")
 
@@ -107,4 +109,40 @@ def predict(customer: CustomerData):
     return {
         "churn_prediction": prediction,
         "churn_probability": probability,
+    }
+
+
+@app.post("/predict-batch")
+async def predict_batch(file: UploadFile = File(...)):
+    contents = await file.read()
+    raw_df = pd.read_csv(io.BytesIO(contents))
+
+    processed_df = clean_and_encode(raw_df)
+
+    expected_columns = model.get_booster().feature_names
+    features_df = processed_df.copy()
+    for col in expected_columns:
+        if col not in features_df.columns:
+            features_df[col] = 0
+    features_df = features_df[expected_columns]
+
+    numerical_cols = ["tenure", "MonthlyCharges", "TotalCharges"]
+    features_df[numerical_cols] = scaler.transform(features_df[numerical_cols])
+
+    probabilities = model.predict_proba(features_df)[:, 1]
+    predictions = (probabilities > 0.5).astype(int)
+
+    results = [
+        {
+            "row": int(i),
+            "churn_prediction": int(predictions[i]),
+            "churn_probability": float(probabilities[i]),
+        }
+        for i in range(len(processed_df))
+    ]
+
+    return {
+        "total_customers": len(results),
+        "predicted_churn": int(predictions.sum()),
+        "results": results,
     }
