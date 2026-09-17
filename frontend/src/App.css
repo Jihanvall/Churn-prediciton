@@ -126,3 +126,57 @@ h1 {
 .result.risk h2 {
   color: #f87171;
 }
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.tab {
+  padding: 10px 20px;
+  border: 1px solid #33333d;
+  border-radius: 10px;
+  background: #14141c;
+  color: #a1a1aa;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.tab.active {
+  background: linear-gradient(90deg, #6366f1, #a855f7);
+  color: white;
+  border-color: transparent;
+}
+
+.batch-form {
+  grid-template-columns: 1fr;
+}
+
+.batch-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.stat-card {
+  background: #14141c;
+  border: 1px solid #26262f;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+}
+
+.stat-label {
+  margin: 0 0 8px;
+  color: #a1a1aa;
+  font-size: 0.85rem;
+}
+
+.stat-value {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #e4e4e7;
+}
