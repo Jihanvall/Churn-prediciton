@@ -141,8 +141,23 @@ async def predict_batch(file: UploadFile = File(...)):
         for i in range(len(processed_df))
     ]
 
+    # clean_and_encode() replaces Contract and InternetService with one-hot
+    # columns, so pull the original category names back in (matching rows
+    # that survived the missing-TotalCharges drop) to compute distributions.
+    original_categories = raw_df.loc[processed_df.index, ["Contract", "InternetService"]].reset_index(drop=True)
+    high_risk_mask = predictions == 1
+
+    contract_distribution = (
+        original_categories.loc[high_risk_mask, "Contract"].value_counts(normalize=True).mul(100).round(1).to_dict()
+    )
+    internet_distribution = (
+        original_categories.loc[high_risk_mask, "InternetService"].value_counts(normalize=True).mul(100).round(1).to_dict()
+    )
+
     return {
         "total_customers": len(results),
         "predicted_churn": int(predictions.sum()),
         "results": results,
+        "contract_distribution": contract_distribution,
+        "internet_distribution": internet_distribution,
     }
