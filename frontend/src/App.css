@@ -4,40 +4,70 @@
 
 body {
   margin: 0;
-  background: #0a0a0f;
-  color: #e4e4e7;
+  background: #f8f9fc;
+  color: #1f2937;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .app {
   max-width: 900px;
   margin: 0 auto;
-  padding: 48px 24px 80px;
+  padding: 80px 24px 80px;
 }
 
 h1 {
   font-size: 2.2rem;
   font-weight: 700;
+  line-height: 1.3;
+  padding-top: 8px;
   margin-bottom: 4px;
-  background: linear-gradient(90deg, #818cf8, #c084fc);
+  background: linear-gradient(90deg, #6366f1, #a855f7);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .subtitle {
-  color: #a1a1aa;
+  color: #6b7280;
   margin-bottom: 32px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.tab {
+  padding: 10px 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.tab.active {
+  background: linear-gradient(90deg, #6366f1, #a855f7);
+  color: white;
+  border-color: transparent;
 }
 
 .form {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  background: #14141c;
-  border: 1px solid #26262f;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 16px;
   padding: 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.batch-form {
+  grid-template-columns: 1fr;
 }
 
 .form label {
@@ -45,16 +75,16 @@ h1 {
   flex-direction: column;
   gap: 8px;
   font-size: 0.85rem;
-  color: #a1a1aa;
+  color: #6b7280;
 }
 
 .form input,
 .form select {
-  background: #0a0a0f;
-  border: 1px solid #33333d;
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
   border-radius: 10px;
   padding: 10px 12px;
-  color: #e4e4e7;
+  color: #1f2937;
   font-size: 0.95rem;
 }
 
@@ -89,7 +119,7 @@ h1 {
 
 .error {
   margin-top: 20px;
-  color: #f87171;
+  color: #dc2626;
 }
 
 .result {
@@ -106,51 +136,25 @@ h1 {
 
 .result p {
   margin: 0;
-  color: #d4d4d8;
+  color: #4b5563;
 }
 
 .result.stable {
-  background: rgba(74, 222, 128, 0.1);
-  border: 1px solid rgba(74, 222, 128, 0.3);
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.25);
 }
 
 .result.stable h2 {
-  color: #4ade80;
+  color: #16a34a;
 }
 
 .result.risk {
-  background: rgba(248, 113, 113, 0.1);
-  border: 1px solid rgba(248, 113, 113, 0.3);
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
 }
 
 .result.risk h2 {
-  color: #f87171;
-}
-.tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
-}
-
-.tab {
-  padding: 10px 20px;
-  border: 1px solid #33333d;
-  border-radius: 10px;
-  background: #14141c;
-  color: #a1a1aa;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.tab.active {
-  background: linear-gradient(90deg, #6366f1, #a855f7);
-  color: white;
-  border-color: transparent;
-}
-
-.batch-form {
-  grid-template-columns: 1fr;
+  color: #dc2626;
 }
 
 .batch-summary {
@@ -161,16 +165,17 @@ h1 {
 }
 
 .stat-card {
-  background: #14141c;
-  border: 1px solid #26262f;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 16px;
   padding: 20px;
   text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .stat-label {
   margin: 0 0 8px;
-  color: #a1a1aa;
+  color: #6b7280;
   font-size: 0.85rem;
 }
 
@@ -178,5 +183,5 @@ h1 {
   margin: 0;
   font-size: 1.8rem;
   font-weight: 700;
-  color: #e4e4e7;
+  color: #1f2937;
 }
