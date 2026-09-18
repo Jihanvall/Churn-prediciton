@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import './App.css'
 
 const API_URL = 'http://127.0.0.1:8000'
@@ -40,7 +41,7 @@ function App() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-    const handleSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     setLoading(true)
     setError(null)
@@ -101,7 +102,12 @@ function App() {
     }
   }
 
-   return (
+  const formatChartData = (distribution) => {
+    if (!distribution) return []
+    return Object.entries(distribution).map(([name, value]) => ({ name, value }))
+  }
+
+  return (
     <div className="app">
       <h1>Churn Prediction</h1>
       <p className="subtitle">Check a single customer or upload a file for batch predictions.</p>
@@ -203,22 +209,50 @@ function App() {
           {batchError && <p className="error">Error: {batchError}</p>}
 
           {batchResult && (
-            <div className="batch-summary">
-              <div className="stat-card">
-                <p className="stat-label">Total Customers</p>
-                <p className="stat-value">{batchResult.total_customers}</p>
+            <>
+              <div className="batch-summary">
+                <div className="stat-card">
+                  <p className="stat-label">Total Customers</p>
+                  <p className="stat-value">{batchResult.total_customers}</p>
+                </div>
+                <div className="stat-card">
+                  <p className="stat-label">Predicted Churn</p>
+                  <p className="stat-value">{batchResult.predicted_churn}</p>
+                </div>
+                <div className="stat-card">
+                  <p className="stat-label">Churn Rate</p>
+                  <p className="stat-value">
+                    {((batchResult.predicted_churn / batchResult.total_customers) * 100).toFixed(1)}%
+                  </p>
+                </div>
               </div>
-              <div className="stat-card">
-                <p className="stat-label">Predicted Churn</p>
-                <p className="stat-value">{batchResult.predicted_churn}</p>
+
+              <div className="charts">
+                <div className="chart-box">
+                  <p className="chart-title">High-Risk Customers by Contract Type</p>
+                  <ResponsiveContainer width="100%" height={250}>
+                    <BarChart data={formatChartData(batchResult.contract_distribution)}>
+                      <XAxis dataKey="name" />
+                      <YAxis unit="%" />
+                      <Tooltip />
+                      <Bar dataKey="value" fill="#6366f1" radius={[6, 6, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="chart-box">
+                  <p className="chart-title">High-Risk Customers by Internet Service</p>
+                  <ResponsiveContainer width="100%" height={250}>
+                    <BarChart data={formatChartData(batchResult.internet_distribution)}>
+                      <XAxis dataKey="name" />
+                      <YAxis unit="%" />
+                      <Tooltip />
+                      <Bar dataKey="value" fill="#a855f7" radius={[6, 6, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
-              <div className="stat-card">
-                <p className="stat-label">Churn Rate</p>
-                <p className="stat-value">
-                  {((batchResult.predicted_churn / batchResult.total_customers) * 100).toFixed(1)}%
-                </p>
-              </div>
-            </div>
+            </>
           )}
         </>
       )}
