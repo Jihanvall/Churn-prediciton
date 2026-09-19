@@ -245,7 +245,7 @@ function App() {
                 </div>
               </div>
 
-              <div className="charts">
+                            <div className="charts">
                 <div className="chart-box">
                   <p className="chart-title">High-Risk Customers by Contract Type</p>
                   <ResponsiveContainer width="100%" height={250}>
@@ -270,6 +270,26 @@ function App() {
                   </ResponsiveContainer>
                 </div>
               </div>
+
+              {batchResult.top_batch_factors && (
+                <div className="chart-box" style={{ marginTop: '16px' }}>
+                  <p className="chart-title">Top Factors Driving Churn Across High-Risk Customers</p>
+                  <div className="factors">
+                    {batchResult.top_batch_factors.map((factor) => (
+                      <div key={factor.feature} className="factor-row">
+                        <span className="factor-name">{factor.feature}</span>
+                        <div className="factor-bar-track">
+                          <div
+                            className={`factor-bar ${factor.impact > 0 ? 'positive' : 'negative'}`}
+                            style={{ width: `${Math.min(Math.abs(factor.impact) * 40, 100)}%` }}
+                          />
+                        </div>
+                        <span className="factor-value">{factor.impact.toFixed(2)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </>
           )}
         </>
