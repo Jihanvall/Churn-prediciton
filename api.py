@@ -164,10 +164,18 @@ async def predict_batch(file: UploadFile = File(...)):
         original_categories.loc[high_risk_mask, "InternetService"].value_counts(normalize=True).mul(100).round(1).to_dict()
     )
 
+    shap_values_batch = explainer.shap_values(features_df[high_risk_mask])
+    avg_impact = dict(zip(features_df.columns, shap_values_batch.mean(axis=0)))
+    top_batch_factors = sorted(avg_impact.items(), key=lambda x: abs(x[1]), reverse=True)[:5]
+
     return {
         "total_customers": len(results),
         "predicted_churn": int(predictions.sum()),
         "results": results,
         "contract_distribution": contract_distribution,
         "internet_distribution": internet_distribution,
+        "top_batch_factors": [
+            {"feature": name, "impact": float(value)}
+            for name, value in top_batch_factors
+        ],
     }

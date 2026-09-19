@@ -11,9 +11,6 @@ imbalanced-learn>=0.12.0
 matplotlib>=3.8.0
 seaborn>=0.13.0
 
-# Deployment & Web Interface
-streamlit>=1.30.0
-
 # Testing
 pytest>=8.0.0
 
