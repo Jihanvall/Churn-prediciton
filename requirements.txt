@@ -21,3 +21,6 @@ pytest>=8.0.0
 fastapi
 uvicorn
 python-multipart
+
+# Model Explainability
+shap
