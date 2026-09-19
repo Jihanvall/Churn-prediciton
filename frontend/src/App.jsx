@@ -181,11 +181,29 @@ function App() {
           {error && <p className="error">Error: {error}</p>}
 
           {result && (
-            <div className={`result ${result.churn_prediction === 1 ? 'risk' : 'stable'}`}>
-              <h2>{result.churn_prediction === 1 ? 'High Risk' : 'Stable'}</h2>
-              <p>Churn probability: {(result.churn_probability * 100).toFixed(1)}%</p>
+  <div className={`result ${result.churn_prediction === 1 ? 'risk' : 'stable'}`}>
+    <h2>{result.churn_prediction === 1 ? 'High Risk' : 'Stable'}</h2>
+    <p>Churn probability: {(result.churn_probability * 100).toFixed(1)}%</p>
+
+    {result.top_factors && (
+      <div className="factors">
+        <p className="factors-title">Top factors behind this prediction</p>
+        {result.top_factors.map((factor) => (
+          <div key={factor.feature} className="factor-row">
+            <span className="factor-name">{factor.feature}</span>
+            <div className="factor-bar-track">
+              <div
+                className={`factor-bar ${factor.impact > 0 ? 'positive' : 'negative'}`}
+                style={{ width: `${Math.min(Math.abs(factor.impact) * 40, 100)}%` }}
+              />
             </div>
-          )}
+            <span className="factor-value">{factor.impact.toFixed(2)}</span>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+)}
         </>
       )}
 
