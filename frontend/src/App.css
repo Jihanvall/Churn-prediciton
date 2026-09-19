@@ -207,3 +207,57 @@ h1 {
   font-weight: 600;
   color: #374151;
 }
+
+.factors {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.factors-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 12px;
+}
+
+.factor-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 50px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 0.8rem;
+}
+
+.factor-name {
+  color: #4b5563;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.factor-bar-track {
+  background: #e5e7eb;
+  border-radius: 6px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.factor-bar {
+  height: 100%;
+  border-radius: 6px;
+}
+
+.factor-bar.positive {
+  background: #dc2626;
+}
+
+.factor-bar.negative {
+  background: #16a34a;
+}
+
+.factor-value {
+  text-align: right;
+  color: #6b7280;
+  font-variant-numeric: tabular-nums;
+}
