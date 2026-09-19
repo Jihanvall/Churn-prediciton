@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 sys.path.append(os.path.join(os.getcwd(), 'src'))
+import shap
 from feature_engineering import build_advanced_features
 from data_preprocessing import clean_and_encode
 
@@ -25,6 +26,7 @@ with open(os.path.join('models', 'final_xgboost_model.pkl'), 'rb') as f:
     model = pickle.load(f)
 with open(os.path.join('models', 'fitted_scaler.pkl'), 'rb') as f:
     scaler = pickle.load(f)
+explainer = shap.TreeExplainer(model)
 
 
 @app.get("/")
@@ -106,9 +108,17 @@ def predict(customer: CustomerData):
     probability = float(model.predict_proba(final_df)[0][1])
     prediction = int(probability > 0.5)
 
+    shap_values = explainer.shap_values(final_df)
+    contributions = dict(zip(final_df.columns, shap_values[0]))
+    top_factors = sorted(contributions.items(), key=lambda x: abs(x[1]), reverse=True)[:5]
+
     return {
         "churn_prediction": prediction,
         "churn_probability": probability,
+        "top_factors": [
+            {"feature": name, "impact": float(value)}
+            for name, value in top_factors
+        ],
     }
 
 
